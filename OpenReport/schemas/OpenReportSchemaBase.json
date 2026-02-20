@@ -1,0 +1,347 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/OpenReportSchema",
+    "definitions": {
+        "OpenReportSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "document": {
+                    "$ref": "#/definitions/Document"
+                }
+            },
+            "required": ["document"],
+            "title": "OpenReportSchema"
+        },
+        "Document": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"document\" instance is required to initiate a document. Required properties: \"name\", \"structure\". Optional properties: \"document_params\", \"document_style\".",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "pattern": "^[\\w {}@.-]+\\.docx$",
+                    "default": ".docx",
+                    "description": "The name to be used when saving the file. A file name should contain .docx extension. A file name can't contain any of the following characters \\ / : * ? \" < > | "
+                },
+                "structure": {
+                    "description": "The \"structure\" instance lists all object instances of the \"document\". The order objects appear in the list reflects the order in the document. Optional instances: \"text\", \"heading\", \"math_expression\", \"bullet_list\", \"table_of_contents\", \"page_break\".",
+                    "items": {
+                        "$ref": "#/definitions/Structure"
+                    }
+                    },
+                "document_params": {
+                    "$ref": "#/definitions/Document Parameters"
+                },
+                "document_style": {
+                    "$ref": "#/definitions/Document Style"
+                }
+            },
+            "required": [
+                "name",
+                "structure"
+            ],
+            "title": "Document"
+        },
+        "Structure": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"structure\" instance lists all object instances of the \"document\". The order objects appear in the list reflects the order in the document. Optional instances: \"text\", \"heading\", \"math_expression\", \"bullet_list\", \"table_of_contents\" and \"page_break\".",
+            "properties": {
+                "heading": {
+                    "$ref": "#/definitions/Heading"
+                },
+                "text": {
+                    "$ref": "#/definitions/Text"
+                    },
+                "math_expression": {
+                    "$ref": "#/definitions/MathExpression"
+                },
+                "page_break": {
+                    "$ref": "#/definitions/PageBreak"
+                },
+                "table_of_contents": {
+                    "type": "object",
+                    "title": "Table of contents",
+                    "description": "The \"table_of_contents\" instance generates a table of contents in the \"document\" based on all \"heading\" instances."
+                },
+                "bullet_list": {
+                    "$ref": "#/definitions/BulletList"
+                }
+            },
+            "required": [],
+            "title": "Structure"
+        },
+        "Document Parameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"document_params\" instance lists the page parameters applicable for the \"document\". Optional properties: \"bottom_margin\", \"left_margin\", \"right_margin\", \"top_margin\", \"landscape\", \"page_numbering\", \"page_number_alignment\" and  \"skip_cover_page\".",
+            "properties": {
+                "landscape": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "The \"landscape\" property specifies if landscape page orientation should be used for the \"document\"."
+                },
+                "top_margin": {
+                    "type": "number",
+                    "description": "The \"top_margin\" property specifies the top margin for all pages in the \"document\" in Cm.",
+                    "minimum": 0
+                },
+                "bottom_margin": {
+                    "type": "number",
+                    "description": "The \"top_margin\" property specifies the bottom margin for all pages in the \"document\" in Cm.",
+                    "minimum": 0
+                },
+                "left_margin": {
+                    "type": "number",
+                    "description": "The \"top_margin\" property specifies the left margin for all pages in the \"document\" in Cm.",
+                    "minimum": 0
+                },
+                "right_margin": {
+                    "type": "number",
+                    "description": "The \"top_margin\" property specifies the right margin for all pages in the \"document\" in Cm.",
+                    "minimum": 0
+                },
+                "page_numbering": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "The \"page_numbering\" property specifies if page numbers should be added for the \"document\"."
+                },
+                "skip_cover_page": {
+                    "type": "boolean",
+                    "description": "The \"skip_cover_page\" property specifies if cover page should be skipped during page numbering for the \"document\"."
+                },
+                "page_number_alignment": {
+                    "type": "string",
+                    "enum": ["left", "center", "right"],
+                    "description": "The \"page_number_alignment\" property specifies the alignment of page numbering for the \"document\"."
+                }
+            },
+            "required": [],
+            "title": "Document Parameters"
+        },
+        "Document Style": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"document_style\" instance lists default styles for \"text\" and \"heading\" instances of the \"document\". The default styles will be applied to all corresponding instances within the \"document\". Every separate instance can still be altered individually via its own properties. Optional instances: \"default_text_style\" and \"default_heading_style\".",
+            "properties": {
+                "default_heading_style": {
+                    "$ref": "#/definitions/Default Text Style",
+                    "description": "The \"default_heading_style\" instance specifies the default style for all \"heading\" instances within the \"document\". Every separate \"heading\" instance can still be altered individually via its own properties. Optional properties: \"alignment\", \"bold\", \"colour\", \"first_line_indent\", \"font\", \"highlight_color\", \"italic\", \"keep_together\", \"keep_with_next\", \"left_indent\", \"level\", \"line_spacing\", \"line_spacing_rule\", \"page_break_before\", \"right_indent\", \"size\", \"space_after\", \"space_before\" and \"underline\".",
+                    "properties": {
+                        "level": {
+                            "type": "integer",
+                            "description": "The \"level\" property specifies the \"heading\" level.",
+                            "minimum": 1,
+                            "maximum": 9
+                        }
+                    }
+                },
+                "default_text_style": {
+                    "$ref": "#/definitions/Default Text Style"
+                }
+            },
+            "title": "Document Style"
+        },
+        "Default Text Style": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"default_text_style\" instance specifies the default style for all \"text\" instances within the \"document\". Every separate \"text\" instance can still be altered individually via its own properties. Optional properties: \"alignment\", \"bold\", \"colour\", \"first_line_indent\", \"font\", \"highlight_color\", \"italic\", \"keep_together\", \"keep_with_next\", \"left_indent\", \"line_spacing\", \"line_spacing_rule\", \"page_break_before\", \"right_indent\", \"size\", \"space_after\", \"space_before\" and \"underline\".",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "description": "The \"colour\" property specifies the text color for this font. The format can be: RGB (for example '0, 0, 0'); HEX (for example '#ffffff'); standard 8 colours ('black', 'blue', 'green', 'red', 'yellow', 'amber', 'white', 'dark blue', 'magenta', 'cyan')."
+                },
+                "size": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "The \"size\" property specifies the font height in English Metric Units (EMU)."
+                },
+                "bold": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "The \"bold\" property causes the text of the paragraph to appear in bold face."
+                },
+                "italic": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "The \"italic\" property causes the text of the paragraph to appear in italics."
+                },
+                "underline": {
+                    "enum": [true, false, "single", "words", "double", "dotted", "thick", "dash", "dot_dash", "dot_dot_dash", "wavy", "dotted_heavy", "dash_heavy", "dot_dash_heavy", "dot_dot_dash_heavy", "wavy_heavy", "dash_long", "wavy_double", "dash_long_heavy"],
+                    "description": "The \"underline\" property specifies the text underline using true, false or Microsoft Word underline styles."
+                },
+                "font": {
+                    "type": "string",
+                    "description": "The \"font\" property specifies the text font using Microsoft Word fonts.",
+                    "enum": ["Abadi MT", "Agency FB", "Aharoni Bold", "Aldhabi", "Algerian", "Almanac MT", "American Uncial", "Andale Mono", "Andalus", "Andy", "AngsanaUPC", "Angsana New", "Aparajita", "Aptos", "Arabic Transparent", "Arabic Typesetting", "Arial", "Arial Black", "Arial Narrow", "Arial Narrow Special", "Arial Nova", "Arial Rounded MT", "Arial Special", "Arial Unicode MS", "Augsburger Initials", "Avenir Next LT Pro", "Bahnschrift", "Baskerville Old Face", "Batang & BatangChe", "Bauhaus 93", "Beesknees ITC", "Bell MT", "Bembo", "Berlin Sans FB", "Bernard MT Condensed", "Bickley Script", "Biome", "BIZ UDGothic", "BIZ UDMincho Medium", "Blackadder ITC", "Bodoni MT", "Bodoni MT Condensed", "Bon Apetit MT", "Bookman Old Style", "Bookshelf Symbol", "Book Antiqua", "Bradley Hand ITC", "Braggadocio", "BriemScript", "Britannic Bold", "Broadway", "BrowalliaUPC", "Browallia New", "Brush Script MT", "Calibri", "Californian FB", "Calisto MT", "Cambria", "Cambria Math", "Candara", "Cariadings", "Castellar", "Cavolini", "Centaur", "Century", "Century Gothic", "Century Schoolbook", "Chiller", "Colonna MT", "Comic Sans MS", "Consolas", "Constantia", "Contemporary Brush", "Cooper Black", "Copperplate Gothic", "Corbel", "CordiaUPC", "Cordia New", "Courier New", "Curlz MT", "Dante", "DaunPenh", "David", "Daytona", "Desdemona", "DFKai-SB", "DilleniaUPC", "Directions MT", "DokChampa", "Dotum & DotumChe", "Ebrima", "Eckmann", "Edda", "Edwardian Script ITC", "Elephant", "Engravers MT", "Enviro", "Eras ITC", "Estrangelo Edessa", "EucrosiaUPC", "Euphemia", "Eurostile", "FangSong", "Felix Titling", "Fine Hand", "Fixed Miriam Transparent", "Flexure", "Footlight MT", "Forte", "Franklin Gothic", "Franklin Gothic Medium", "FrankRuehl", "FreesiaUPC", "Freestyle Script", "French Script MT", "Futura", "Gabriola", "Gadugi", "Garamond", "Garamond MT", "Gautami", "Georgia", "Georgia Ref", "Gigi", "Gill Sans MT", "Gill Sans MT Condensed", "Gisha", "Gloucester", "Goudy Old Style", "Goudy Stout", "Gradl", "Grotesque", "Gulim & GulimChe", "Gungsuh & GungsuhChe", "Hadassah Friedlaender", "Haettenschweiler", "Harlow Solid Italic", "Harrington", "HGGothicE", "HGMinchoE", "HGSoeiKakugothicUB", "High Tower Text", "Holidays MT", "HoloLens MDL2 Assets", "Impact", "Imprint MT Shadow", "Informal Roman", "IrisUPC", "Iskoola Pota", "JasmineUPC", "Javanese Text", "Jokerman", "Juice ITC", "KaiTi", "Kalinga", "Kartika", "Keystrokes MT", "Khmer UI", "Kigelia", "Kino MT", "KodchiangUPC", "Kokila", "Kristen ITC", "Kunstler Script", "Lao UI", "Latha", "LCD", "Leelawadee", "Levenim MT", "LilyUPC", "Lucida Blackletter", "Lucida Bright", "Lucida Bright Math", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Magneto", "Maiandra GD", "Malgun Gothic", "Mangal", "Map Symbols", "Marlett", "Matisse ITC", "Matura MT Script Capitals", "McZee", "Mead Bold", "Meiryo", "Mercurius Script MT Bold", "Microsoft GothicNeo", "Microsoft Himalaya", "Microsoft JhengHei", "Microsoft JhengHei UI", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Sans Serif", "Microsoft Tai Le", "Microsoft Uighur", "Microsoft YaHei", "Microsoft YaHei UI", "Microsoft Yi Baiti", "MingLiU", "MingLiU-ExtB", "MingLiU_HKSCS", "MingLiU_HKSCS-ExtB", "Minion Web", "Miriam", "Miriam Fixed", "Mistral", "Modern Love", "Modern No. 20", "Mongolian Baiti", "Monotype.com", "Monotype Corsiva", "Monotype Sorts", "MoolBoran", "MS Gothic", "MS LineDraw", "MS Mincho", "MS Outlook", "MS PGothic", "MS PMincho", "MS Reference", "MS UI Gothic", "MT Extra", "MV Boli", "Myanmar Text", "Narkisim", "News Gothic MT", "New Caledonia", "Niagara", "Nirmala UI", "Nyala", "OCR-B-Digits", "OCRB", "OCR A Extended", "Old English Text MT", "Onyx", "Palace Script MT", "Palatino Linotype", "Papyrus", "Parade", "Parchment", "Parties MT", "Peignot Medium", "Pepita MT", "Perpetua", "Perpetua Titling MT", "Placard Condensed", "Plantagenet Cherokee", "Playbill", "PMingLiU", "PMingLiU-ExtB", "Poor Richard", "Posterama", "Pristina", "Quire Sans", "Raavi", "Rage Italic", "Ransom", "Ravie", "RefSpecialty", "Rockwell", "Rockwell Nova", "Rod", "Runic MT Condensed", "Sabon Next LT", "Sagona", "Sakkal Majalla", "Script MT Bold", "Segoe Chess", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Symbol", "Selawik", "Shonar Bangla", "Showcard Gothic", "Shruti", "Signs MT", "SimHei", "Simplified Arabic Fixed", "SimSun", "SimSun-ExtB", "Sitka", "NSimSun", "Snap ITC", "Sports MT", "STCaiyun", "Stencil", "STFangsong", "STHupo", "STKaiti", "Stop", "STXihei", "STXingkai", "STXinwei", "STZhongsong", "Sylfaen", "Symbol", "Tahoma", "Tempo Grunge", "Tempus Sans ITC", "Temp Installer Font", "The Hand", "The Serif Hand", "Times New Roman", "Times New Roman Special", "Tisa Offc Serif Pro", "Traditional Arabic", "Transport MT", "Trebuchet MS", "Tunga", "Tw Cen MT", "Univers", "Urdu Typesetting", "Utsaah", "Vacation MT", "Vani", "Verdana", "Verdana Ref", "Vijaya", "Viner Hand ITC", "Vivaldi", "Vixar ASCI", "Vladimir Script", "Vrinda", "Walbaum", "Webdings", "Westminster", "Wide Latin", "Wingding"]
+                },
+                "left_indent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "The \"left_indent\" property specifies the space between the left margin and the left side of the paragraph in Cm."
+                },
+                "right_indent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "The \"right_indent\" property specifies the space between the right margin and the right side of the paragraph in Cm."
+                },
+                "first_line_indent": {
+                    "type": "number",
+                    "description": "The \"first_line_indent\" property specifies the relative difference in indentation for the first line of the paragraph. A positive value causes the first line to be indented. A negative value produces a hanging indent. "
+                },
+                "alignment": {
+                    "type": "string",
+                    "enum": ["left", "center", "right", "justify", "both", "distribute", "mediumKashida", "highKashida", "lowKashida", "thaiDistribute"],
+                    "description": "The \"alignment\" property specifies the justification setting for this paragraph."
+                },
+                "highlight_color": {
+                    "type": "string",
+                    "description": "The \"highlight_color\" property specifies the colour of highlighting applied.",
+                    "enum": ["black", "blue", "green", "darkBlue", "darkRed", "darkYellow", "lightGray", "darkGray", "darkGreen", "magenta", "red", "darkCyan", "cyan", "darkMagenta", "white","yellow"]
+                },
+                "space_after": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "The \"space_after\" property specifies the spacing to appear between this paragraph and the subsequent paragraph in Cm."
+                },
+                "space_before": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "The \"space_before\" property specifies the spacing to appear between this paragraph and the prior paragraph in Cm."
+                },
+                "line_spacing_rule": {
+                    "type": "string",
+                    "enum": ["single", "one_point_five", "double", "multiple", "at least", "exactly"],
+                    "description": "The \"line_spacing_rule\" property specifies how the value of line_spacing should be interpreted. Assigning any of the members like single or double will cause the value of line_spacing to be updated to produce the corresponding line spacing."
+                },
+                "line_spacing": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "The \"line_spacing\" property specifies the space between baselines in successive lines of the paragraph in Pt. The Pt value class is a convenient way to apply line spacing in units of points."
+                },
+                "page_break_before": {
+                    "type": "boolean",
+                    "description": "The \"page_break_before\" property specifies if the paragraph should appear at the top of the page following the prior paragraph."
+                },
+                "keep_with_next": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "The \"keep_with_next\" property specifies if the paragraph should be kept on the same page as the subsequent paragraph when the document is rendered. For example, this property could be used to keep a section heading on the same page as its first paragraph."
+
+                },
+                "keep_together": {
+                    "type": "boolean",
+                    "default": true,
+                    "enum": [true, false],
+                    "description": "The \"keep_together\" property specifies if the paragraph should be kept \"in one piece\" and not broken across a page boundary when the document is rendered."
+                }
+            },
+            "title": "Default Text Style"
+        },
+        "Text": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"text\" instance initiates a paragraph in the output document. Required properties: \"body\". Optional properties: \"alignment\", \"bold\", \"colour\", \"first_line_indent\", \"font\", \"highlight_color\", \"italic\", \"keep_together\", \"keep_with_next\", \"left_indent\", \"line_spacing\", \"line_spacing_rule\", \"page_break_before\", \"right_indent\", \"size\", \"space_after\", \"space_before\" and \"underline\".",
+            "$ref": "#/definitions/Default Text Style",
+            "properties": {
+                "body": {
+                    "type": "string",
+                    "description": "The \"body\" property specifies the paragraph's text. Separate text parts can be parameterized using \\command{text} format, for example \\textit{Hello world!}. Parameters can overlap, for example \\textbf{\\textit{Hello world!}}. For the whole list of available parameterization please check the full documentation."
+                }
+            },
+            "required": ["body"],
+            "title": "Text"},
+        "Heading": {
+            "type": "object",
+            "additionalProperties": false,
+            "$ref": "#/definitions/Default Text Style",
+            "description": "The \"heading\" instance initiates a paragraph with Heading style applied in the output document. The \"level\" property specifies the heading's level. Required properties: \"body\", \"level\". Optional properties: \"alignment\", \"bold\", \"colour\", \"first_line_indent\", \"font\", \"highlight_color\", \"italic\", \"keep_together\", \"keep_with_next\", \"left_indent\", \"line_spacing\", \"line_spacing_rule\", \"page_break_before\", \"right_indent\", \"size\", \"space_after\", \"space_before\" and \"underline\".",
+            "properties": {
+                "body": {
+                    "type": "string",
+                    "description": "The \"body\" property specifies the paragraph's text. Separate text parts can be parameterized using \\command{text} format, for example \\textit{Hello world!}. Parameters can overlap, for example \\textbf{\\textit{Hello world!}}. For the whole list of available parameterization please check the full documentation."
+
+                },
+                "level": {
+                    "type": "integer",
+                    "description": "The \"level\" property specifies the \"heading\" level (0-9).",
+                    "minimum": 0,
+                    "maximum": 9
+                }
+            },
+            "required": ["body", "level"],
+            "title": "Heading"
+        },
+        "BulletList": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"bullet_list\" instance initiates a bulleted or numbered list in the output document. Required properties: \"bullet_list_style\" and \"items\".",
+            "properties": {
+                "bullet_list_style": {
+                    "type": "string",
+                    "description":  "The \"bullet_list_style\" property specifies the Microsoft Word style of bulleted list.",
+                    "enum": ["List", "List 2", "List 3", "List Bullet", "List Bullet 2", "List Bullet 3", "List Continue", "List Continue 2", "List Continue 3", "List Number", "List Number 2", "List Number 3", "List Paragraph"]
+                },
+                "items": {
+                    "items": {
+                        "$ref": "#/definitions/Items"
+                    },
+                    "description": "The \"items\" instance lists all object instances applicable for this bullet list. Optional instances: \"text\" and \"math_expression\".",
+                    "title": "Items"
+                }
+            },
+            "required": [
+                "bullet_list_style",
+                "items"
+            ],
+            "title": "BulletList"
+        },
+        "Items": {
+            "type": "object",
+            "description": "The \"items\" instance lists all object instances applicable for this bullet list. Optional instances: \"text\" and \"math_expression\".",
+            "additionalProperties": false,
+            "properties": {
+                "text": {
+                    "$ref": "#/definitions/Text"
+                },
+                "math_expression": {
+                    "$ref": "#/definitions/MathExpression"
+                }
+            },
+            "title": "Items"
+        },
+        "MathExpression": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"math_expression\" instance initiates an equation in the output document. The equation should be specified using LaTeX's features for typesetting mathematics. The \"math_expression\" provides the display math mode, meaning expressions are not part of a paragraph and put on separate lines. The inline math mode allows to write formulas that are part of a \"text\" or \"heading\" instance. For the inline mode the mathematical expressions should be written within ${...}$ delimiters, for example 'This means: ${x^2 + y^2 = z^2}$'. Required properties: \"body\".",
+            "properties": {
+                "body": {
+                    "type": "string",
+                    "description": "The \"body\" property specifies the LaTeX equation.",
+                    "pattern": "^>-(\\n.*)*$"
+                }
+            },
+            "required": [
+                "body"
+            ],
+            "title": "MathExpression"
+        },
+        "PageBreak": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The \"page_break\" instance allows to add blank pages to the output document. Required properties: \"number_of_pages\".",
+            "properties": {
+                "number_of_pages": {
+                    "type": "integer",
+                    "description": "The \"number_of_pages\" property specifies the number of subsequent blank pages to be added to the output document.",
+                    "minimum": 1
+                }
+            },
+            "required": [
+                "number_of_pages"
+            ],
+            "title": "PageBreak"
+        }
+    }
+}

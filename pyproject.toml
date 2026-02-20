@@ -1,0 +1,37 @@
+[project]
+name = "openreport_base"
+version = "0.1.0"
+description = "OpenReport Base - A free YAML-based tool for creating automated and parameterized Word and PDF documents. Supports text, headings, math expressions, bullet lists, page breaks, and document styling."
+authors = [
+    {name = "APT47",email = "info@apt-software.com"}
+]
+license = {text = "End-User License Agreement (EULA)"}
+readme = "README.md"
+requires-python = ">=3.12"
+keywords = ["document", "generation", "yaml", "word", "pdf", "docx", "report", "automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+    "Topic :: Text Processing :: Markup",
+]
+dependencies = [
+    "docx2pdf (>=0.1.8)",
+    "latex2mathml (>=3.78.0)",
+    "lxml (>=5.2.2)",
+    "python_docx (>=1.1.0)",
+    "PyYAML (>=6.0.0)"
+]
+
+[project.urls]
+Homepage = "https://github.com/APT47/OpenReport"
+Documentation = "https://openreport.netlify.app/"
+
+[tool.poetry]
+packages = [{include = "OpenReport"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
