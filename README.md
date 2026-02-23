@@ -7,8 +7,53 @@ OpenReport streamlines the integration of user's own analysis and custom formatt
 For more information please visit: 
 https://apt-software.com 
 
-For full documentation please visit: 
+For full documentation please visit:
 https://openreport.netlify.app/
+
+## Installation
+
+OpenReport Base is available on PyPI. Install it using pip:
+
+```bash
+pip install openreport-base
+```
+
+Or using Poetry:
+
+```bash
+poetry add openreport-base
+```
+
+**Requirements:** Python 3.12 or higher.
+
+After installation, verify it works:
+
+```python
+from OpenReport import OpenReportDocumentGenerator
+```
+
+OpenReport Base includes support for:
+
+- Text and Headings
+- Mathematical expressions
+- Bullet lists
+- Page breaks
+- Document styling and parameters
+- Table of contents
+- PDF export
+
+### Recommended IDE Plugin
+For enhanced YAML editing experience, we recommend installing the **yamlconfig-idea** plugin:
+
+1. Open PyCharm/IntelliJ IDEA
+2. Go to **File → Settings** (or **PyCharm → Preferences** on macOS)
+3. Navigate to **Plugins** in the left sidebar
+4. Click **Marketplace** tab
+5. Search for "yamlconfig-idea"
+6. Click **Install** next to the plugin
+7. Restart your IDE when prompted
+
+This plugin provides enhanced YAML syntax highlighting, validation, and autocompletion features that improve the OpenReport YAML specification editing experience.
 
 ## Features
 - Parses a YAML specification file, which can be intuitively created using autocomplete.
@@ -234,22 +279,6 @@ The full document loop functionality is available at:
 ## License
 This project is licensed under the End-User License Agreement (EULA) - see 
 the [LICENSE](https://github.com/APT47/OpenReport/blob/master/LICENSE.md) file for details.
-
-## Development Setup
-
-### Recommended IDE Plugin
-For enhanced YAML editing experience, we recommend installing the **yamlconfig-idea** plugin:
-
-#### Installation Steps:
-1. Open PyCharm/IntelliJ IDEA
-2. Go to **File → Settings** (or **PyCharm → Preferences** on macOS)
-3. Navigate to **Plugins** in the left sidebar
-4. Click **Marketplace** tab
-5. Search for "yamlconfig-idea"
-6. Click **Install** next to the plugin
-7. Restart your IDE when prompted
-
-This plugin provides enhanced YAML syntax highlighting, validation, and autocompletion features that improve the OpenReport YAML specification editing experience.
 
 ## Contact
 For issues or inquiries, contact [apt-software](https://github.com/APT47).
