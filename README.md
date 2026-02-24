@@ -75,14 +75,14 @@ From a YAML specification file, OpenReport generates a Word (.docx) or PDF docum
 
 - Text
 - Headings
-- Tables (with captions)
-- Figures (with captions)
+- Tables (with captions) *— available with Pro and Fabric plans*
+- Figures (with captions) *— available with Pro and Fabric plans*
 - Mathematical expressions
 - Bullet lists
-- External Word files
+- External Word files *— available with Pro and Fabric plans*
 - Automatically generated:
   - Table of contents
-  - List of figures 
+  - List of figures
   - List of tables
 
 A valid YAML file must contain 'document', 'name', and 'structure' keys. For example:
@@ -111,11 +111,17 @@ Each component supports custom formatting. For example:
     font: Calibri
     size: 9
 ```
-This specification adds text "Hello World!" to the document with fixed attributes 'size' (9) and 'font' (Calibri). 
+This specification adds text "Hello World!" to the document with fixed attributes 'size' (9) and 'font' (Calibri).
 
-The full formatting functionality is available at:
+To avoid repeating the same formatting on every component, OpenReport supports default styles at the document
+level using the "document_style" instance. Default styles for text, heading, and caption components are applied
+automatically and can be overridden individually per component.
+
+The full formatting functionality is available at: https://openreport.netlify.app/components_appearance/
 
 ### Component generation
+*Tables, figures, captions, and python source generation are available with Pro and Fabric plans.*
+
 Components can be dynamically generated using the 'source' key. For example:
 ```yaml
 - figure:
@@ -134,13 +140,13 @@ For example:
     source:
       output: table
       source_type: python
-      python_executable: generate_table.py
+      python_executable: generate_table
     table_font: Times New Roman
     table_font_size: 9
     caption:
       body: This is a table caption
 ```
-This specification adds table to the document. The table is an output of user-defined function 'generate_table.py'. The 
+This specification adds table to the document. The table is an output of user-defined function 'generate_table'. The 
 table's text is fixed with attributes 'table_font_size' (9) and 'table_font' (Times New Roman). The table's caption is "This is a table caption". 
 
 The inputs for user-defined function can be specified directly under 'source'. For example:
@@ -149,15 +155,15 @@ The inputs for user-defined function can be specified directly under 'source'. F
     source:
       output: figure
       source_type: python
-      python_executable: plot_sales_per_year.py
+      python_executable: plot_sales_per_year
       country_name: France
 ```
-This specification adds figure to the document. The figure is an output of user-defined function 'plot_sales_per_year.py' 
+This specification adds figure to the document. The figure is an output of user-defined function 'plot_sales_per_year' 
 with input parameter 'country_name' (France). This is equivalent to:
 ```python
 fig = plot_sales_per_year(country_name="France")
 ```
-The full generation mode functionality is available at:
+The full generation mode functionality is available at: https://openreport.netlify.app/components_generation/
   
 
 ### Parameters
@@ -185,22 +191,24 @@ Parameters can be defined using 'source' key. For example:
     source:
       output: text
       source_type: python
-      python_executable: calculate_total_sales.py
+      python_executable: calculate_total_sales
 ```
 This specification declares parameter (total_sales). The value of parameter is an output of user-defined function 
-'calculate_total_sales.py'. The parameter value can be addressed within the rest of the document:
+'calculate_total_sales'. The parameter value can be addressed within the rest of the document:
 ```yaml
 - text:
     body: Total sales for year @parameter{year} is @parameter{total_sales}.
 ```
-If 'calculate_total_sales.py' outputs 250,000, the document will contain:
+If 'calculate_total_sales' outputs 250,000, the document will contain:
 ```
 Total sales for year 2025 is 250,000.
 ```
 
-The full parameter functionality is available at:
+The full parameter functionality is available at: https://openreport.netlify.app/parameters/
 
-### Iterations 
+### Iterations
+*Available with Pro and Fabric plans.*
+
 OpenReport allows to declare a loop and add repetitively (a set of) similar objects. For example:
 ```yaml
 - loop:
@@ -228,13 +236,13 @@ Loops can be defined using 'source' key. For example:
     source:
       output: array
       source_type: python
-      python_executable: calculate_sales_per_month.py 
+      python_executable: calculate_sales_per_month 
     iterator_applicable:
       - text: 
           body: " - @iterator{sale_month_i} EUR" 
 ```
 This specification declares iterator (sales_month_i). The values of the iterator are an output of user-defined function 
-'calculate_sales_per_month.py'. If the script outputs [10, 20, 30], the document will contain:
+'calculate_sales_per_month'. If the script outputs [10, 20, 30], the document will contain:
 ```
 The sales per month are:
  - 10 EUR
@@ -242,9 +250,11 @@ The sales per month are:
  - 30 EUR
 ```
 Nested loops are also supported. 
-The full loop functionality is available at:
+The full loop functionality is available at: https://openreport.netlify.app/iterations/
 
 ### Document Iterations
+*Available with Pro and Fabric plans.*
+
 OpenReport enables batch document creation: For example:
 ```yaml
 document_loop:
@@ -263,18 +273,18 @@ document_loop:
               source:
                 output: figure
                 source_type: python
-                python_executable: plot_sales_per_year.py
+                python_executable: plot_sales_per_year
                 country_name: @iterator{country}
 ```
 This specification creates two documents (Germany_sales_report.docx and France_sales_report.docx). Each document has
-a heading specifying the country name, a text and a figure generated by user-defined function 'plot_sales_per_year.py'
+a heading specifying the country name, a text and a figure generated by user-defined function 'plot_sales_per_year'
 with input parameter 'country_name'. The example of output for Germany is:
 ![Figure](docs/examples/input/figure/Germany_sales_plot.jpg)
 
 The example of output for France is:
 ![Figure](docs/examples/input/figure/France_sales_plot.jpg)
 
-The full document loop functionality is available at:
+The full document loop functionality is available at: https://openreport.netlify.app/document_iterations/
 
 ## License
 This project is licensed under the End-User License Agreement (EULA) - see 
